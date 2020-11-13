@@ -71,10 +71,10 @@ namespace _5101_Assignment3.Controllers
         /// <summary>
         /// Returns a teacher from the database given their unique identifier {id}
         /// </summary>
-        /// <example>GET api/TeacherData/FindTeacher/10</example>
+        /// <example>GET api/TeacherData/FindTeacher/{id}</example>
         /// <param name="id">The teacher's unique identifier in the "teachers" table</param>
         /// <returns>
-        /// A teacher instance with the informations from the teacher found using {id}
+        /// A teacher instance with the information from the teacher found using {id}
         /// </returns>
         [HttpGet]
         public Teacher FindTeacher(int id)
