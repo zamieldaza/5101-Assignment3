@@ -15,42 +15,40 @@ namespace _5101_Assignment3.Controllers
         private SchoolDBContext School = new SchoolDBContext();
 
         /// <summary>
-        /// 
-        /// 
+        /// Returns a list of teachers from the database
         /// </summary>
-        /// <returns></returns>
+        /// <example>GET api/TeacherData/ListTeachers</example>
+        /// <returns>
+        /// A list of teachers
+        /// </returns>
         [HttpGet]
         public List<Teacher> ListTeachers()
         {
-            //Create an instance of a connection
+            //Connect to the database and get a Result Set using a SQL Query
             MySqlConnection Connection = School.AccessDatabase();
-
-            //Open the connection between the web server and database
             Connection.Open();
-
-            //Establish a new command (query) for our database
             MySqlCommand cmd = Connection.CreateCommand();
-
-            //SQL QUERY
+            //SQL Query - Gets all the teachers from the "teachers" table
             cmd.CommandText = "SELECT * FROM teachers";
-
-            //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Teachers
             List<Teacher> Teachers = new List<Teacher> { };
 
-            //Loop Through Each Row the Result Set
+            //Read each row from the Result Set
             while (ResultSet.Read())
             {
-                //Access Column information by the DB column name as an index
+                //Access each column's information and assign it to new variables
                 int TeacherID = (int)ResultSet["teacherid"];
                 string TeacherFirstName = ResultSet["teacherfname"].ToString();
                 string TeacherLastname = ResultSet["teacherlname"].ToString();
                 string TeacherEmployeeNumber = ResultSet["employeenumber"].ToString();
-                string TeacherHireDate = ResultSet["hiredate"].ToString();
+                //Split the hire date information to get rid of the time
+                string[] SplitHireDate = ResultSet["hiredate"].ToString().Split(' ');
+                string TeacherHireDate = SplitHireDate[0];
                 string TeacherSalary = ResultSet["salary"].ToString();
 
+                //Create an instance of a Teacher and assign the above variables to its fields
                 Teacher NewTeacher = new Teacher();
                 NewTeacher.TeacherID = TeacherID;
                 NewTeacher.FirstName = TeacherFirstName;
@@ -59,47 +57,54 @@ namespace _5101_Assignment3.Controllers
                 NewTeacher.HireDate = TeacherHireDate;
                 NewTeacher.Salary = TeacherSalary;
 
-                //Add the Teacher Name to the List
+                //Add the current Teacher to the list of Teachers
                 Teachers.Add(NewTeacher);
             }
 
-            //Close the connection between the MySQL Database and the WebServer
+            //Close the connection between the MySQL Database and the WebServer once the loop ends
             Connection.Close();
 
-            //Return the final list of author names
+            //Return the list of teachers
             return Teachers;
         }
 
+        /// <summary>
+        /// Returns a teacher from the database given their unique identifier {id}
+        /// </summary>
+        /// <example>GET api/TeacherData/FindTeacher/10</example>
+        /// <param name="id">The teacher's unique identifier in the "teachers" table</param>
+        /// <returns>
+        /// A teacher instance with the informations from the teacher found using {id}
+        /// </returns>
         [HttpGet]
         public Teacher FindTeacher(int id)
         {
+            //Create an instance of a Teacher
             Teacher NewTeacher = new Teacher();
 
-            //Create an instance of a connection
+            //Connect to the database and get a Result Set using a SQL Query
             MySqlConnection Connection = School.AccessDatabase();
-
-            //Open the connection between the web server and database
             Connection.Open();
-
-            //Establish a new command (query) for our database
             MySqlCommand cmd = Connection.CreateCommand();
-
-            //SQL QUERY
+            //SQL QUERY - Gets a teacher from the "teachers" table using "teacherid" as a matching condition with
+            //the {id} given to this method
             cmd.CommandText = "SELECT * FROM teachers WHERE teacherid = " + id;
-
-            //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
+            //Read the row from the Result Set
             while (ResultSet.Read())
             {
-                //Access Column information by the DB column name as an index
+                //Access each column's information and assign it to new variables
                 int TeacherID = (int)ResultSet["teacherid"];
                 string TeacherFirstName = ResultSet["teacherfname"].ToString();
                 string TeacherLastname = ResultSet["teacherlname"].ToString();
                 string TeacherEmployeeNumber = ResultSet["employeenumber"].ToString();
-                string TeacherHireDate = ResultSet["hiredate"].ToString();
+                //Split the hire date information to get rid of the time
+                string[] SplitHireDate = ResultSet["hiredate"].ToString().Split(' ');
+                string TeacherHireDate = SplitHireDate[0];
                 string TeacherSalary = ResultSet["salary"].ToString();
 
+                //Assign the above variables to the fields of NewTeacher
                 NewTeacher.TeacherID = TeacherID;
                 NewTeacher.FirstName = TeacherFirstName;
                 NewTeacher.LastName = TeacherLastname;
@@ -111,6 +116,7 @@ namespace _5101_Assignment3.Controllers
             //Close the connection between the MySQL Database and the WebServer
             Connection.Close();
 
+            //Return the Teacher
             return NewTeacher;
         }
     }

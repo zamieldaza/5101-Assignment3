@@ -15,6 +15,10 @@ namespace _5101_Assignment3.Models
         private static string Server { get { return "localhost"; } }
         private static string Port { get { return "3306"; } }
 
+        /// <summary>
+        /// Creates a string with credentials needed to connect to the school database
+        /// Using the properties listed above
+        /// </summary>
         protected static string ConnectionString
         {
             get

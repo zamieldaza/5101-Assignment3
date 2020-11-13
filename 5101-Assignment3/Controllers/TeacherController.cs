@@ -23,6 +23,7 @@ namespace _5101_Assignment3.Controllers
             return View(Teachers);
         }
 
+        // GET: /Teacher/Show/{id}
         public ActionResult Show(int id)
         {
             TeacherDataController Controller = new TeacherDataController();
