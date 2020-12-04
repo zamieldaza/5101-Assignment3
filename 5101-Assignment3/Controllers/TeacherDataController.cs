@@ -15,21 +15,27 @@ namespace _5101_Assignment3.Controllers
         private SchoolDBContext School = new SchoolDBContext();
 
         /// <summary>
-        /// Returns a list of teachers from the database
+        /// Returns a list of teachers from the database with a given Search Key. If the Search key is empty, it returns all the teachers found in the database
         /// </summary>
         /// <example>GET api/TeacherData/ListTeachers</example>
+        /// <param name="SearchKey">The Search Key to find teachers in the database</param>
         /// <returns>
-        /// A list of teachers
+        /// A list of teachers from the database whose name or last name coincide with the Search Key
         /// </returns>
         [HttpGet]
-        public List<Teacher> ListTeachers()
+        [Route("api/TecherData/ListTeachers/{SearchKey?}")]
+        public List<Teacher> ListTeachers(string SearchKey=null)
         {
             //Connect to the database and get a Result Set using a SQL Query
             MySqlConnection Connection = School.AccessDatabase();
             Connection.Open();
             MySqlCommand cmd = Connection.CreateCommand();
-            //SQL Query - Gets all the teachers from the "teachers" table
-            cmd.CommandText = "SELECT * FROM teachers";
+            //SQL Query - Gets all the teachers from the "teachers" table whose first or last name coincide with the Search Key
+            cmd.CommandText = "SELECT * FROM teachers WHERE LOWER(teacherfname) LIKE LOWER(@key) OR LOWER(teacherlname) LIKE LOWER(@key) OR LOWER(CONCAT(teacherfname, ' ', teacherlname)) LIKE LOWER(@key)";
+            //Input sanitization
+            cmd.Parameters.AddWithValue("@key", "%" + SearchKey + "%");
+            cmd.Prepare();
+            
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Teachers
@@ -118,6 +124,29 @@ namespace _5101_Assignment3.Controllers
 
             //Return the Teacher
             return NewTeacher;
+        }
+
+        /// <summary>
+        /// Deletes a teacher from the database with the given id
+        /// </summary>
+        /// <example>POST api/TeacherData/DeleteTeacher/{id}</example>
+        /// <param name="id">the id of the teacher to delete</param>
+        [HttpPost]
+        public void DeleteTeacher(int id)
+        {
+            //Connect to the database and get a Result Set using a SQL Query
+            MySqlConnection Connection = School.AccessDatabase();
+            Connection.Open();
+            MySqlCommand cmd = Connection.CreateCommand();
+            //SQL Query - Deletes a teacher from the database with the given id
+            cmd.CommandText = "DELETE FROM teachers WHERE teacherid=@id";
+            //Input sanitization
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Connection.Close();
         }
     }
 }

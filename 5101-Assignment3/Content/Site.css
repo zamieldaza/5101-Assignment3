@@ -15,3 +15,24 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Styling for the Show Teacher page */
+nav{
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+.navlink{
+    float: left;
+}
+.delLink{
+    float: right;
+    color: darkred;
+}
+
+/* Styling for the Delete Confirm button */
+.delButton {
+    display: block;
+    margin: 0 auto;
+    background: red;
+    color: #fff;
+}
