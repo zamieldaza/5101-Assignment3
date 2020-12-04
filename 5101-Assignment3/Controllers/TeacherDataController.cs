@@ -150,7 +150,7 @@ namespace _5101_Assignment3.Controllers
         }
 
         [HttpPost]
-        public void AddTeacher([FromBody] Teacher NewTeacher)
+        public void AddTeacher(Teacher NewTeacher)
         {
             //Connect to the database
             MySqlConnection Connection = School.AccessDatabase();
