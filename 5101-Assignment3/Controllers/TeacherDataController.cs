@@ -148,5 +148,26 @@ namespace _5101_Assignment3.Controllers
 
             Connection.Close();
         }
+
+        [HttpPost]
+        public void AddTeacher([FromBody] Teacher NewTeacher)
+        {
+            //Connect to the database and get a Result Set using a SQL Query
+            MySqlConnection Connection = School.AccessDatabase();
+            Connection.Open();
+            MySqlCommand cmd = Connection.CreateCommand();
+            //SQL Query - Adds a teacher to the database with the given parameters
+            cmd.CommandText = "INSERT INTO teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) VALUES (@TeacherFName, @TeacherLName, @EmployeeNumber, CURRENT_DATE(), @Salary)";
+            cmd.Parameters.AddWithValue("@TeacherFName", NewTeacher.FirstName);
+            cmd.Parameters.AddWithValue("@TeacherLName", NewTeacher.LastName);
+            cmd.Parameters.AddWithValue("@EmployeeNumber", NewTeacher.EmployeeNumber);
+            cmd.Parameters.AddWithValue("@Salary", NewTeacher.Salary);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Connection.Close();
+
+        }
     }
 }

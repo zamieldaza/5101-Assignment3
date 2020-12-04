@@ -21,7 +21,7 @@ nav{
     overflow: hidden;
     margin-bottom: 30px;
 }
-.navlink{
+.navLink{
     float: left;
 }
 .delLink{
@@ -35,4 +35,18 @@ nav{
     margin: 0 auto;
     background: red;
     color: #fff;
+}
+
+/* Styling for the Add Teacher page */
+.inputRow input, .inputRow textarea {
+    float: right;
+}
+.inputRow textarea {
+    width: 100%;
+    max-width: none;
+    float: none;
+}
+.inputRow input[type="submit"] {
+    float: none;
+    margin-top: 50px;
 }

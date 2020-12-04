@@ -47,5 +47,28 @@ namespace _5101_Assignment3.Controllers
             controller.DeleteTeacher(id);
             return RedirectToAction("List");
         }
+
+        //GET : /Teacher/New
+        public ActionResult New()
+        {
+            return View();
+        }
+
+        //POST : /Teacher/Create
+        [HttpPost]
+        public ActionResult Create(string TeacherFName, string TeacherLName, string TeacherEmployeeNumber, string TeacherHireDate, string TeacherSalary)
+        {
+            Teacher NewTeacher = new Teacher();
+            NewTeacher.FirstName = TeacherFName;
+            NewTeacher.LastName = TeacherLName;
+            NewTeacher.EmployeeNumber = TeacherEmployeeNumber;
+            NewTeacher.HireDate = TeacherHireDate;
+            NewTeacher.Salary = TeacherSalary;
+
+            TeacherDataController controller = new TeacherDataController();
+            controller.AddTeacher(NewTeacher);
+
+            return RedirectToAction("List");
+        }
     }
 }
