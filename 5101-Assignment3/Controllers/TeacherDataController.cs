@@ -134,7 +134,7 @@ namespace _5101_Assignment3.Controllers
         [HttpPost]
         public void DeleteTeacher(int id)
         {
-            //Connect to the database and get a Result Set using a SQL Query
+            //Connect to the database
             MySqlConnection Connection = School.AccessDatabase();
             Connection.Open();
             MySqlCommand cmd = Connection.CreateCommand();
@@ -152,7 +152,7 @@ namespace _5101_Assignment3.Controllers
         [HttpPost]
         public void AddTeacher([FromBody] Teacher NewTeacher)
         {
-            //Connect to the database and get a Result Set using a SQL Query
+            //Connect to the database
             MySqlConnection Connection = School.AccessDatabase();
             Connection.Open();
             MySqlCommand cmd = Connection.CreateCommand();
