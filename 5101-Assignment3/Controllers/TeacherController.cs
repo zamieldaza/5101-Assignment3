@@ -35,8 +35,8 @@ namespace _5101_Assignment3.Controllers
         public ActionResult DeleteConfirm(int id)
         {
             TeacherDataController controller = new TeacherDataController();
-            Teacher NewAuthor = controller.FindTeacher(id);
-            return View(NewAuthor);
+            Teacher NewTeacher = controller.FindTeacher(id);
+            return View(NewTeacher);
         }
 
         //POST : /Teacher/Delete/{id}
