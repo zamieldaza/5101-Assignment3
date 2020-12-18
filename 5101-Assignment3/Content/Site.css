@@ -39,8 +39,21 @@ nav{
 }
 
 /* Styling for the Add Teacher page */
-.inputRow input {
+/* Reference: https://github.com/christinebittle/BlogProject_7/blob/master/BlogProject/Content/Site.css */
+.inputrow {
+    margin-bottom: 15px;
+    width: 40%;
+    overflow: hidden;
+}
+
+.inputrow input, .inputrow textarea {
     float: right;
+}
+
+.inputrow textarea {
+    width: 100%;
+    max-width: none;
+    float: none;
 }
 .inputRow input[type="submit"] {
     float: none;
