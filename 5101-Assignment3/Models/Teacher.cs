@@ -20,6 +20,6 @@ namespace _5101_Assignment3.Models
         //Teacher's hire date
         public string HireDate;
         //Teacher's salary
-        public string Salary;
+        public decimal Salary;
     }
 }

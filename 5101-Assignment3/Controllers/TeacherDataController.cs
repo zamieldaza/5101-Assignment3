@@ -52,7 +52,7 @@ namespace _5101_Assignment3.Controllers
                 //Split the hire date information to get rid of the time
                 string[] SplitHireDate = ResultSet["hiredate"].ToString().Split(' ');
                 string TeacherHireDate = SplitHireDate[0];
-                string TeacherSalary = ResultSet["salary"].ToString();
+                decimal TeacherSalary = (decimal)ResultSet["salary"];
 
                 //Create an instance of a Teacher and assign the above variables to its fields
                 Teacher NewTeacher = new Teacher();
@@ -108,7 +108,7 @@ namespace _5101_Assignment3.Controllers
                 //Split the hire date information to get rid of the time
                 string[] SplitHireDate = ResultSet["hiredate"].ToString().Split(' ');
                 string TeacherHireDate = SplitHireDate[0];
-                string TeacherSalary = ResultSet["salary"].ToString();
+                decimal TeacherSalary = (decimal)ResultSet["salary"];
 
                 //Assign the above variables to the fields of NewTeacher
                 NewTeacher.TeacherID = TeacherID;
@@ -149,8 +149,13 @@ namespace _5101_Assignment3.Controllers
             Connection.Close();
         }
 
+        /// <summary>
+        /// Adds a teacher to the database
+        /// </summary>
+        /// <example>POST api/TeacherData/AddTeacher/{id}</example>
+        /// <param name="NewTeacher">Object with the needed information to add a new teacher</param>
         [HttpPost]
-        public void AddTeacher(Teacher NewTeacher)
+        public void AddTeacher([FromBody]Teacher NewTeacher)
         {
             //Connect to the database
             MySqlConnection Connection = School.AccessDatabase();
@@ -168,6 +173,32 @@ namespace _5101_Assignment3.Controllers
 
             Connection.Close();
 
+        }
+
+        /// <summary>
+        /// Updates a teacher in the database with the given information
+        /// </summary>
+        /// <example>POST api/TeacherData/UpdateTeacher/{id}</example>
+        /// <param name="id">Id of the teacher to update</param>
+        /// <param name="TeacherUpdate">Object with the information to update the teacher</param>
+        public void UpdateTeacher(int id, [FromBody]Teacher TeacherUpdate)
+        {
+            //Connect to the database
+            MySqlConnection Connection = School.AccessDatabase();
+            Connection.Open();
+            MySqlCommand cmd = Connection.CreateCommand();
+            //SQL Query - Adds a teacher to the database with the given parameters
+            cmd.CommandText = "UPDATE teachers SET teacherfname=@TeacherFName, teacherlname=@TeacherLName, employeenumber=@EmployeeNumber, salary=@Salary WHERE teacherid=@TeacherId";
+            cmd.Parameters.AddWithValue("@TeacherFName", TeacherUpdate.FirstName);
+            cmd.Parameters.AddWithValue("@TeacherLName", TeacherUpdate.LastName);
+            cmd.Parameters.AddWithValue("@EmployeeNumber", TeacherUpdate.EmployeeNumber);
+            cmd.Parameters.AddWithValue("@Salary", TeacherUpdate.Salary);
+            cmd.Parameters.AddWithValue("@TeacherId", id);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Connection.Close();
         }
     }
 }

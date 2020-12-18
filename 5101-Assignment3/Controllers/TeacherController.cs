@@ -56,7 +56,7 @@ namespace _5101_Assignment3.Controllers
 
         //POST : /Teacher/Create
         [HttpPost]
-        public ActionResult Create(string TeacherFName, string TeacherLName, string TeacherEmployeeNumber, string TeacherHireDate, string TeacherSalary)
+        public ActionResult Create(string TeacherFName, string TeacherLName, string TeacherEmployeeNumber, string TeacherHireDate, decimal TeacherSalary)
         {
             Teacher NewTeacher = new Teacher();
             NewTeacher.FirstName = TeacherFName;
@@ -69,6 +69,32 @@ namespace _5101_Assignment3.Controllers
             controller.AddTeacher(NewTeacher);
 
             return RedirectToAction("List");
+        }
+
+        //GET: /Teacher/Update/{id}
+        [HttpGet]
+        public ActionResult Update(int id)
+        {
+            TeacherDataController controller = new TeacherDataController();
+            Teacher TeacherToUpdate = controller.FindTeacher(id);
+
+            return View(TeacherToUpdate);
+        }
+
+        //POST: /Teacher/Update/{id}
+        [HttpPost]
+        public ActionResult Update(int id, string TeacherFName, string TeacherLName, string TeacherEmployeeNumber, decimal TeacherSalary)
+        {
+            Teacher TeacherUpdate = new Teacher();
+            TeacherUpdate.FirstName = TeacherFName;
+            TeacherUpdate.LastName = TeacherLName;
+            TeacherUpdate.EmployeeNumber = TeacherEmployeeNumber;
+            TeacherUpdate.Salary = TeacherSalary;
+
+            TeacherDataController controller = new TeacherDataController();
+            controller.UpdateTeacher(id, TeacherUpdate);
+
+            return RedirectToAction("Show/"+id);
         }
     }
 }
